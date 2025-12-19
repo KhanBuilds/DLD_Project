@@ -63,6 +63,6 @@ else:
 
 
         else:
-            print('Video not loaded check for errors')
+            print('Video not loaded check for errors!')
     cap.release()
     cv2.destroyAllWindows()
