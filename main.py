@@ -1,4 +1,6 @@
 import cv2
+import serial
+import time
 FRAME_WIDTH=640
 FRAME_HEIGHT= 480
 FOV_X = 60
@@ -7,6 +9,8 @@ degrees_per_pixelx= FOV_X/FRAME_WIDTH
 degrees_per_pixely= FOV_Y/FRAME_HEIGHT
 servo_pos_x=90
 servo_pos_y=90
+arduino = serial.Serial('COM3', 115200, timeout=0.1)
+time.sleep(2)
 cascade_path= cv2.data.haarcascades
 face_cascade_path= cascade_path + 'haarcascade_frontalface_default.xml'
 
@@ -58,11 +62,12 @@ else:
                     #print(f"Face center:{face_center_x}, X angle: {int(new_servo_pos_x)}")
                     servo_pos_x = new_servo_pos_x
                     servo_pos_y = new_servo_pos_y
-                    print(f"X Angle: {int(servo_pos_x)}, Y Angle: {int(servo_pos_y)}")
+                    #print(f"X Angle: {int(servo_pos_x)}, Y Angle: {int(servo_pos_y)}")
+                    arduino.write(bytes([int(new_servo_pos_x), int(new_servo_pos_y)]))
                     cv2.waitKey(1)
 
 
         else:
-            print('Video not loaded check for errors')
+            print('Video not loaded check for errors!')
     cap.release()
     cv2.destroyAllWindows()
